@@ -9,11 +9,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Clarify — Deepfake Detection for Everyone",
+  title: "Clarify - Deepfake Detection for Everyone",
   description: "Clarify detects deepfakes in video, audio, and images. Enterprise-grade AI detection built for everyday people.",
   keywords: ["deepfake detection", "AI authentication", "media verification", "synthetic media", "clarify"],
   openGraph: {
-    title: "Clarify — Deepfake Detection for Everyone",
+    title: "Clarify - Deepfake Detection for Everyone",
     description: "Detect deepfakes in video, audio, and images. Built for everyday people.",
     type: "website",
   },
