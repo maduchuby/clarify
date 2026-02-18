@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     }
 
     const response = await fetch(
-      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Beta%20Testers`,
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/tbl5Au2idW5uP6DH5`,
       {
         method: 'POST',
         headers: {
