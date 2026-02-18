@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-const TOTAL_FRAMES = 58;
+const TOTAL_FRAMES = 96;
 
 function getFrameSrc(index: number): string {
   const padded = String(index).padStart(3, '0');
@@ -17,24 +17,19 @@ export default function ScrollVideo() {
   const rafRef = useRef<number>(0);
   const [loaded, setLoaded] = useState(false);
 
-  // Preload all images
-  useEffect(() => {
-    let loadedCount = 0;
-    const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      img.src = getFrameSrc(i);
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === TOTAL_FRAMES) {
-          imagesRef.current = images;
-          setLoaded(true);
-          drawFrame(0);
-        }
-      };
-      images[i] = img;
-    }
+  // Resize canvas without resetting it on every frame draw
+  const setupCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    const ctx = canvas.getContext('2d');
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
 
   const drawFrame = useCallback((frameIndex: number) => {
@@ -43,16 +38,12 @@ export default function ScrollVideo() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const img = imagesRef.current[frameIndex];
-    if (!img) return;
+    if (!img || !img.complete) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const displayWidth = window.innerWidth;
-    const displayHeight = window.innerHeight;
-    canvas.width = displayWidth * dpr;
-    canvas.height = displayHeight * dpr;
-    canvas.style.width = `${displayWidth}px`;
-    canvas.style.height = `${displayHeight}px`;
-    ctx.scale(dpr, dpr);
+    const displayWidth = canvas.width / dpr;
+    const displayHeight = canvas.height / dpr;
+    if (!displayWidth || !displayHeight) return;
 
     // Cover the canvas with the image (like object-fit: cover)
     const imgRatio = img.width / img.height;
@@ -62,8 +53,6 @@ export default function ScrollVideo() {
     if (imgRatio > canvasRatio) {
       drawHeight = displayHeight;
       drawWidth = displayHeight * imgRatio;
-      // On portrait/mobile, face sits at ~44% from left in source frames.
-      // Use that as the focal point instead of 50% to keep it centered on screen.
       const isPortrait = displayWidth < displayHeight;
       const focusX = isPortrait ? 0.47 : 0.5;
       offsetX = (displayWidth - drawWidth) * focusX;
@@ -79,7 +68,29 @@ export default function ScrollVideo() {
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
   }, []);
 
-  // Scroll handler
+  // Preload all images
+  useEffect(() => {
+    setupCanvas();
+    let loadedCount = 0;
+    const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
+      img.src = getFrameSrc(i);
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === TOTAL_FRAMES) {
+          imagesRef.current = images;
+          setLoaded(true);
+          drawFrame(0);
+        }
+      };
+      img.onerror = () => { loadedCount++; };
+      images[i] = img;
+    }
+  }, [setupCanvas, drawFrame]);
+
+  // Scroll handler — uses clientHeight for stable mobile viewport measurement
   useEffect(() => {
     if (!loaded) return;
 
@@ -88,9 +99,13 @@ export default function ScrollVideo() {
       if (!container) return;
 
       const rect = container.getBoundingClientRect();
-      const scrollHeight = container.offsetHeight - window.innerHeight;
-      const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / scrollHeight));
+      // clientHeight is stable on mobile (doesn't change with browser chrome)
+      const vh = document.documentElement.clientHeight;
+      const scrollHeight = container.offsetHeight - vh;
+      if (scrollHeight <= 0) return;
+
+      const scrolled = Math.max(0, -rect.top);
+      const progress = Math.min(1, scrolled / scrollHeight);
       const frameIndex = Math.min(
         TOTAL_FRAMES - 1,
         Math.floor(progress * TOTAL_FRAMES)
@@ -112,21 +127,25 @@ export default function ScrollVideo() {
     };
   }, [loaded, drawFrame]);
 
-  // Handle resize
+  // Handle resize — resize canvas then redraw current frame
   useEffect(() => {
     if (!loaded) return;
-    const handleResize = () => drawFrame(currentFrameRef.current);
+    const handleResize = () => {
+      setupCanvas();
+      drawFrame(currentFrameRef.current);
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [loaded, drawFrame]);
+  }, [loaded, drawFrame, setupCanvas]);
 
   return (
     <div
       ref={containerRef}
       className="relative"
-      style={{ height: '400vh' }}
+      style={{ height: '400dvh' }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      {/* dvh = dynamic viewport height — fixes iOS Safari 100vh white-space bug */}
+      <div className="sticky top-0 w-full overflow-hidden" style={{ height: '100dvh' }}>
         {/* Loading state */}
         {!loaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-[#f5f0eb]">
