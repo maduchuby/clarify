@@ -43,7 +43,7 @@ export async function POST(request: Request) {
             Name: name,
             Email: email,
             'Why Interested': reason,
-            'Submitted At': new Date().toISOString(),
+            'Submitted At': new Date().toISOString().split('T')[0],
           },
         }),
       }

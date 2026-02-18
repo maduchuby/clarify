@@ -36,7 +36,7 @@ export async function POST(request: Request) {
             Name: fullName,
             Email: email,
             Phone: phone || '',
-            'Submitted At': new Date().toISOString(),
+            'Submitted At': new Date().toISOString().split('T')[0],
           },
         }),
       }
