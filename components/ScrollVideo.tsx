@@ -62,7 +62,11 @@ export default function ScrollVideo() {
     if (imgRatio > canvasRatio) {
       drawHeight = displayHeight;
       drawWidth = displayHeight * imgRatio;
-      offsetX = (displayWidth - drawWidth) / 2;
+      // On portrait/mobile, face sits at ~44% from left in source frames.
+      // Use that as the focal point instead of 50% to keep it centered on screen.
+      const isPortrait = displayWidth < displayHeight;
+      const focusX = isPortrait ? 0.44 : 0.5;
+      offsetX = (displayWidth - drawWidth) * focusX;
       offsetY = 0;
     } else {
       drawWidth = displayWidth;
