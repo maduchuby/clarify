@@ -23,13 +23,6 @@ export async function POST(request: Request) {
       );
     }
 
-    if (reason.length < 20) {
-      return NextResponse.json(
-        { error: 'Please provide more details about your interest (minimum 20 characters)' },
-        { status: 400 }
-      );
-    }
-
     const response = await fetch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/tbl5Au2idW5uP6DH5`,
       {

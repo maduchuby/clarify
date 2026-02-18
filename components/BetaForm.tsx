@@ -29,12 +29,15 @@ export default function BetaForm() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Submission failed');
+      }
 
       setIsSubmitted(true);
       setFormData({ name: '', email: '', reason: '' });
-    } catch {
-      setError('Something went wrong. Please try again.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
