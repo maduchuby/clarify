@@ -146,19 +146,20 @@ export default function ScrollVideo() {
     >
       {/* dvh = dynamic viewport height — fixes iOS Safari 100vh white-space bug */}
       <div className="sticky top-0 w-full overflow-hidden" style={{ height: '100dvh' }}>
-        {/* Loading state */}
-        {!loaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-[#f5f0eb]">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-12 h-12 border-2 border-[#1a1a1a]/10 border-t-[#1a1a1a]/60 rounded-full animate-spin" />
-              <span className="text-[#1a1a1a]/40 text-sm tracking-widest uppercase">Loading</span>
-            </div>
-          </div>
-        )}
+        {/* First frame shown immediately — fades out once canvas is ready */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/frames/frame_000.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+          style={{ opacity: loaded ? 0 : 1, pointerEvents: 'none' }}
+        />
 
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full transition-opacity duration-500"
+          style={{ opacity: loaded ? 1 : 0 }}
         />
 
         {/* Gradient overlay at bottom for smooth transition into cream */}
