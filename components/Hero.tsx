@@ -11,7 +11,7 @@ interface HeroProps {
 export default function Hero({ onJoinWaitlist, onBetaAccess }: HeroProps) {
   return (
     <section className="section-container min-h-screen py-12">
-      <div className="max-w-7xl mx-auto z-10 grid lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 z-10 grid lg:grid-cols-2 gap-12 items-center">
         {/* Left side - Text content */}
         <motion.div
           className="text-center lg:text-left order-2 lg:order-1"
@@ -74,7 +74,7 @@ export default function Hero({ onJoinWaitlist, onBetaAccess }: HeroProps) {
 
         {/* Right side - Interactive Face */}
         <motion.div
-          className="order-1 lg:order-2 flex items-center justify-center pb-20 lg:pb-0"
+          className="order-1 lg:order-2 flex items-center justify-center pb-20 lg:pb-0 w-full"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 1.4, ease: 'easeOut' }}

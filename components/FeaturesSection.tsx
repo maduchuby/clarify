@@ -85,7 +85,7 @@ export default function FeaturesSection() {
               In a world where AI can generate fake videos, clone voices, and fabricate images in seconds, knowing what&apos;s real matters more than ever. Clarify puts enterprise-grade detection technology into the hands of everyday people.
             </p>
             <p className="text-[#1a1a1a]/50 text-lg leading-relaxed">
-              No technical expertise required. Simply upload any media and get instant, clear results you can trust.
+              No technical expertise required. Simply download the Clarify app or browser extension to receive instant deepfake alerts as you scroll through social media, browse the internet, or receive calls.
             </p>
           </motion.div>
 

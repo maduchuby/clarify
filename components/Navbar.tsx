@@ -49,18 +49,18 @@ export default function Navbar({ onBetaTester, onWaitlist }: NavbarProps) {
         </button>
 
         {/* Nav Links */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-3 sm:gap-8">
           <button
             onClick={onBetaTester}
-            className="text-[#1a1a1a]/50 text-sm tracking-wide hover:text-[#1a1a1a] transition-colors duration-300"
+            className="text-[#1a1a1a]/50 text-xs sm:text-sm tracking-wide hover:text-[#1a1a1a] transition-colors duration-300"
           >
-            Become a Beta Tester
+            Beta Tester
           </button>
           <button
             onClick={onWaitlist}
-            className="text-[#1a1a1a]/50 text-sm tracking-wide hover:text-[#1a1a1a] transition-colors duration-300"
+            className="text-[#1a1a1a]/50 text-xs sm:text-sm tracking-wide hover:text-[#1a1a1a] transition-colors duration-300"
           >
-            Join the Waitlist
+            Join Waitlist
           </button>
         </div>
       </div>

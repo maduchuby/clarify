@@ -10,7 +10,6 @@ export default function BetaForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    company: '',
     reason: '',
   });
 
@@ -33,7 +32,7 @@ export default function BetaForm() {
       if (!response.ok) throw new Error('Submission failed');
 
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', company: '', reason: '' });
+      setFormData({ name: '', email: '', reason: '' });
     } catch {
       setError('Something went wrong. Please try again.');
     } finally {
@@ -106,22 +105,6 @@ export default function BetaForm() {
                   required
                   className="w-full px-5 py-3.5 bg-[#f5f0eb]/80 border border-[#1a1a1a]/[0.08] rounded-xl text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 focus:outline-none focus:border-[#1a1a1a]/20 transition-colors"
                   placeholder="jane@company.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="company" className="block text-sm text-[#1a1a1a]/50 mb-2">
-                  Company / Role
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-5 py-3.5 bg-[#f5f0eb]/80 border border-[#1a1a1a]/[0.08] rounded-xl text-[#1a1a1a] placeholder:text-[#1a1a1a]/25 focus:outline-none focus:border-[#1a1a1a]/20 transition-colors"
-                  placeholder="Acme Corp — Product Manager"
                 />
               </div>
 
