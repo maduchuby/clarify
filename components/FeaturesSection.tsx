@@ -53,21 +53,6 @@ export default function FeaturesSection() {
       className="relative py-32 md:py-40 px-6 md:px-10 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto relative">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-center mb-24"
-        >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1a1a1a] tracking-tight mb-6">
-            See What&apos;s Real
-          </h2>
-          <p className="text-[#1a1a1a]/50 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Clarify gives everyday people the power to detect deepfakes across video, audio, and images, instantly and effortlessly.
-          </p>
-        </motion.div>
-
         {/* Mockup + Description Layout */}
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
           {/* Left: Description */}
@@ -110,6 +95,21 @@ export default function FeaturesSection() {
             </div>
           </motion.div>
         </div>
+
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1a1a1a] tracking-tight mb-6">
+            See What&apos;s Real
+          </h2>
+          <p className="text-[#1a1a1a]/50 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Clarify gives everyday people the power to detect deepfakes across video, audio, and images, instantly and effortlessly.
+          </p>
+        </motion.div>
 
         {/* Feature Cards - 2x2 grid */}
         <div className="grid md:grid-cols-2 gap-8">
