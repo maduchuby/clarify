@@ -9,13 +9,13 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onBetaTester, onWaitlist }: NavbarProps) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show after 100px, hide once past the scroll video section (400vh)
+      // Always visible during scroll video section (0 to 400vh), hide after
       const scrollVideoHeight = window.innerHeight * 4;
-      setVisible(window.scrollY > 100 && window.scrollY < scrollVideoHeight);
+      setVisible(window.scrollY < scrollVideoHeight);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
