@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-const TOTAL_FRAMES = 192;
+const TOTAL_FRAMES = 118;
 
 function getFrameSrc(index: number): string {
   const padded = String(index).padStart(3, '0');
