@@ -54,7 +54,7 @@ export default function ScrollVideo() {
       // Image wider than canvas — scale to fill height
       // On mobile portrait: scale down slightly (0.82) so face is smaller, shift right (focusX 0.42)
       const scale = 1;
-      const focusX = isPortrait ? 0.46 : 0.5;
+      const focusX = isPortrait ? 0.48 : 0.5;
       drawHeight = displayHeight * scale;
       drawWidth = drawHeight * imgRatio;
       offsetX = (displayWidth - drawWidth) * focusX;
