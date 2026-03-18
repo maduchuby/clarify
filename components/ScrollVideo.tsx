@@ -45,17 +45,20 @@ export default function ScrollVideo() {
     const displayHeight = canvas.height / dpr;
     if (!displayWidth || !displayHeight) return;
 
-    // Cover the canvas (like object-fit: cover) — face centered at 0.5 on all devices
     const imgRatio = img.width / img.height;
     const canvasRatio = displayWidth / displayHeight;
+    const isPortrait = displayWidth < displayHeight;
     let drawWidth: number, drawHeight: number, offsetX: number, offsetY: number;
 
     if (imgRatio > canvasRatio) {
-      // Image wider than canvas — scale to fill height, center horizontally
-      drawHeight = displayHeight;
-      drawWidth = displayHeight * imgRatio;
-      offsetX = (displayWidth - drawWidth) / 2;
-      offsetY = 0;
+      // Image wider than canvas — scale to fill height
+      // On mobile portrait: scale down slightly (0.82) so face is smaller, shift right (focusX 0.42)
+      const scale = isPortrait ? 0.82 : 1;
+      const focusX = isPortrait ? 0.42 : 0.5;
+      drawHeight = displayHeight * scale;
+      drawWidth = drawHeight * imgRatio;
+      offsetX = (displayWidth - drawWidth) * focusX;
+      offsetY = (displayHeight - drawHeight) / 2;
     } else {
       // Image taller than canvas — scale to fill width, center vertically
       drawWidth = displayWidth;
