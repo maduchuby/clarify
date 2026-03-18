@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-const TOTAL_FRAMES = 96;
+const TOTAL_FRAMES = 192;
 
 function getFrameSrc(index: number): string {
   const padded = String(index).padStart(3, '0');
@@ -45,19 +45,19 @@ export default function ScrollVideo() {
     const displayHeight = canvas.height / dpr;
     if (!displayWidth || !displayHeight) return;
 
-    // Cover the canvas with the image (like object-fit: cover)
+    // Cover the canvas (like object-fit: cover) — face centered at 0.5 on all devices
     const imgRatio = img.width / img.height;
     const canvasRatio = displayWidth / displayHeight;
     let drawWidth: number, drawHeight: number, offsetX: number, offsetY: number;
 
     if (imgRatio > canvasRatio) {
+      // Image wider than canvas — scale to fill height, center horizontally
       drawHeight = displayHeight;
       drawWidth = displayHeight * imgRatio;
-      const isPortrait = displayWidth < displayHeight;
-      const focusX = isPortrait ? 0.47 : 0.5;
-      offsetX = (displayWidth - drawWidth) * focusX;
+      offsetX = (displayWidth - drawWidth) / 2;
       offsetY = 0;
     } else {
+      // Image taller than canvas — scale to fill width, center vertically
       drawWidth = displayWidth;
       drawHeight = displayWidth / imgRatio;
       offsetX = 0;
